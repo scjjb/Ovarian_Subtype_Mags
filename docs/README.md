@@ -58,14 +58,122 @@ Cross-validation Summary (mean ± s.d. from 10,000 iterations of bootstrapping):
 
 <details>
 <summary>
-40x Cross-validation Results:
+Detailed Cross-validation Results By Magnification (Not Yet Uploaded)
+</summary>
+  
+<details>
+<summary>
+40x Cross-validation Results
 </summary>
 
 40x full results breakdown here
 
 </details>
+<details>
+<summary>
+20x Cross-validation Results
+</summary>
 
+20x full results breakdown here
 
+</details>
+<details>
+<summary>
+10x Cross-validation Results
+</summary>
+
+10x full results breakdown here
+
+</details>
+<details>
+<summary>
+5x Cross-validation Results
+</summary>
+
+5x full results breakdown here
+
+</details>
+<details>
+<summary>
+2.5x Cross-validation Results
+</summary>
+
+2.5x full results breakdown here
+
+</details>
+<details>
+<summary>
+1.25x Cross-validation Results
+</summary>
+
+1.25x full results breakdown here
+
+</details>
+</details>
+
+Hold-out Validation Summary (mean ± s.d. from 10,000 iterations of bootstrapping):
+| Magnif. | Balanced Accuracy | Area Under ROC Curve (AUC) |  F1 Score |
+| :----------: | :----------: | :----------: | :----------: |
+| 40x     | 54.0% ± 4.0%   | **0.860 ± 0.021**     | 0.477 ± 0.041     |
+| 20x     | 55.0% ± 3.9%   | 0.829 ± 0.020     | 0.485 ± 0.041     |
+| 10x     | **62.0% ± 3.6%**   | 0.850 ± 0.019     | **0.549 ± 0.037**     |
+| 5x      | 61.0% ± 3.6%   | 0.858 ± 0.023     | 0.545 ±  0.037    |
+| 2.5x    | 58.1% ± 3.7%   | 0.857 ± 0.021     | 0.516 ± 0.039     |
+| 1.25x   | 58.0% ± 3.8%   | 0.855 ± 0.021     | 0.529 ± 0.042     |
+<details>
+<summary>
+Detailed Hold-out Validation Results By Magnification (Not Yet Uploaded)
+</summary>
+  
+<details>
+<summary>
+40x Hold-out Validation Results
+</summary>
+
+40x full results breakdown here
+
+</details>
+<details>
+<summary>
+20x Hold-out Validation Results
+</summary>
+
+20x full results breakdown here
+
+</details>
+<details>
+<summary>
+10x Hold-out Validation Results
+</summary>
+
+10x full results breakdown here
+
+</details>
+<details>
+<summary>
+5x Hold-out Validation Results
+</summary>
+
+5x full results breakdown here
+
+</details>
+<details>
+<summary>
+2.5x Hold-out Validation Results
+</summary>
+
+2.5x full results breakdown here
+
+</details>
+<details>
+<summary>
+1.25x Hold-out Validation Results
+</summary>
+
+1.25x full results breakdown here
+
+</details>
+</details>
 
 ## Code Examples
 The following code includes examples from every stage of pre-processing, hyperparameter tuning, and model validation at multiple magnifications.  
