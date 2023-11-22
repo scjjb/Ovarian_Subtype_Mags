@@ -7,7 +7,33 @@
 
 This repo was created as part of a submission to [ISBI 2024](https://biomedicalimaging.org/2024/).
 
-## Hyperparameter Tuning
+## Hyperparameters
+Final Hyperparamters Determined by Hyperparameter Tuning: 
+| Magnif. | Learning Rate | Weight Decay | First Moment Decay | Second Moment Decay | Stability Parameter | Attention Layer Size | Dropout | Max Patches |
+| :-------: | :-------------: | :------------: |:------------------:|:-------------------: | :-------------------: | :--------------------: | :-------: | :-----------: |
+| 40x     | 1e-3          | 1e-4         |        0.95        | 0.99                | 1e-10               | 512                  | 0.6     | 50000       |
+| 20x     | 5e-4          | 1e-4         |        0.99        | 0.99                | 1e-8                | 256                  | 0.7     | 10000       |
+| 10x     | 5e-4          | 1e-4         |        0.8         | 0.99                | 1e-4                | 256                  | 0.6     | 1000        |
+| 5x      | 5e-4          | 1e-6         |        0.95        | 0.999               | 1e-14               | 128                  | 0.6     | 400         |
+| 2.5x    | 1e-3          | 1e-5         |        0.9         | 0.9999              | 1e-4                | 256                  | 0.7     | 40          |
+| 1.25x   | 5e-4          | 1e-5         |        0.9         | 0.999               | 1e-14               | 256                  |    0.5  | 7           |
+
+&nbsp;
+
+Hyperparameters were tuned in 13 stages in which 1-3 individual hyperparameters were altered and the rest were frozen. All specific configurations can be accessed in the folder tuning_configs. The maximum number of epochs was set to 30 for the first 3 stages, 100 for stages 4-9, 150 for stages 10-13:
+- Stage 1: Learning Rate, Max Patches
+- Stage 2: First Moment Decay, Second Moment Decay
+- Stage 3: Weight Decay, Dropout
+- Stage 4: Learning Rate, Dropout, Max Patches
+- Stage 5: Attention Layer Size
+- Stage 6: Learning Rate, Dropout, Max Patches
+- Stage 7: Stability Parameter
+- Stage 8: Learning Rate
+- Stage 9: Dropout
+- Stage 10: Learning Rate, Dropout, Max Patches
+- Stage 11: Weight Decay
+- Stage 12: Max Patches
+- Stage 13: First Moment Decay, Second Moment Decay
 
 
 ## Code Examples
