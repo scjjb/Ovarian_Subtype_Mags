@@ -20,7 +20,13 @@ Final Hyperparamters Determined by Hyperparameter Tuning:
 
 &nbsp;
 
-Hyperparameters were tuned in 13 stages in which 1-3 individual hyperparameters were altered and the rest were frozen. All specific configurations can be accessed in the folder tuning_configs. The maximum number of epochs was set to 30 for the first 3 stages, 100 for stages 4-9, 150 for stages 10-13:
+Hyperparameters were tuned in 13 stages in which 1-3 individual hyperparameters were altered and the rest were frozen. All specific configurations can be accessed in the folder tuning_configs. The maximum number of epochs was set to 30 for the first 3 stages, 100 for stages 4-9, 150 for stages 10-13.
+
+<details>
+<summary>
+Hyperparameter Tuning Stages
+</summary>
+
 - Stage 1: Learning Rate, Max Patches
 - Stage 2: First Moment Decay, Second Moment Decay
 - Stage 3: Weight Decay, Dropout
@@ -34,6 +40,10 @@ Hyperparameters were tuned in 13 stages in which 1-3 individual hyperparameters 
 - Stage 11: Weight Decay
 - Stage 12: Max Patches
 - Stage 13: First Moment Decay, Second Moment Decay
+
+</details>
+
+
 
 ## Results
 Cross-validation Summary (mean ± s.d. from 10,000 iterations of bootstrapping):
