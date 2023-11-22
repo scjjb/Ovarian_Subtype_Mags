@@ -1,7 +1,7 @@
 ## Reducing Histopathology Slide Magnification Improves the Accuracy and Speed of Ovarian Cancer Subtyping
 <img src="CISTIB logo.png" align="right" width="240"/>
 
-*Brief Summary* 
+*An extensive analysis of ovarian cancer WSI magnifications in attention-based multiple instance learning ([ABMIL](https://proceedings.mlr.press/v80/ilse18a.html?ref=https://githubhelp.com))* 
 
 <img src="ABMILarchitecture-min.png" align="centre" width="900"/>
 
@@ -36,8 +36,15 @@ Hyperparameters were tuned in 13 stages in which 1-3 individual hyperparameters 
 - Stage 13: First Moment Decay, Second Moment Decay
 
 ## Results
-Cross-validation Summary:
-Table from paper here
+Cross-validation Summary (mean ± s.d. from 10,000 iterations of bootstrapping):
+| Magnif. | Balanced Accuracy | Area Under ROC Curve (AUC) |  F1 Score |
+| :----------: | :----------: | :----------: | :----------: |
+| 40x     | 51.3% ± 1.5%   | 0.825 ± 0.016     | 0.516 ± 0.015     |
+| 20x     | 50.6% ± 1.4%   | 0.846 ± 0.014    | 0.506 ± 0.015    |
+| 10x     | 52.3% ± 1.3%   | 0.800 ± 0.013    | 0.515 ± 0.015    |
+| 5x      | 54.0% ± 1.3%   | 0.817 ± 0.017    | 0.538 ± 0.014    |
+| 2.5x    | **55.6% ± 1.5%**   | 0.877 ± 0.011    | 0.557 ± 0.014     |
+| 1.25x   | **55.6% ± 1.7%**   | **0.888 ± 0.009**    | **0.558 ± 0.017**   |
 
 <details>
 <summary>
