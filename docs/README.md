@@ -37,11 +37,11 @@ Hyperparameters were tuned in 13 stages in which 1-3 individual hyperparameters 
 
 
 ## Code Examples
-The following code includes examples from every stage of pre-processing, hyperparameter tuning, and model validation.  
+The following code includes examples from every stage of pre-processing, hyperparameter tuning, and model validation at multiple magnifications.  
 
 <details>
 <summary>
-Tissue region extraction
+Tissue patch extraction
 </summary>
 We segmented tissue using saturation thresholding and extracted non-overlapping tissue regions which corresponded to 256x256 pixel patches at 40x (e.g. 512x512 for 20x, 1024x1024 for 10x). At this stage all images are still at 40x magnification, and only the patch size is changing:
   
@@ -72,7 +72,8 @@ python extract_features_fp.py --hardware DGX --custom_downsample 32 --model_type
 Hyperparameter tuning
 </summary>
 
-Tuning tuning tuning
+Models were tuned using configurations in the folder "tuning_configs", with a separate call used for each of the five cross-validation folds to allow for parallelisation:
+
 ``` shell
 ## 40x tuning first stage first fold
 python main.py --tuning --hardware DGX --tuning_output_file /mnt/results/tuning_results/staging_only_resnet50_40x_firsttuning_bce_fold0.csv --min_epochs 0 --max_epochs 30 --early_stopping --num_tuning_experiments 1 --split_dir "esgo_staging_5fold_100" --k 1 --results_dir /mnt/results --exp_code staging_only_resnet50_40x_firsttuning_30epochs_bce_fold0 --subtyping --weighted_sample --bag_loss balanced_ce --no_inst_cluster --task ovarian_5class  --model_type clam_sb --subtyping --csv_path 'dataset_csv/ESGO_train_all.csv' --data_root_dir "/mnt/results/features" --features_folder "ovarian_leeds_resnet50_40x_features_DGX" --tuning_config_file tuning_configs/esgo_staging_resnet50_40x_config1.txt
@@ -80,9 +81,11 @@ python main.py --tuning --hardware DGX --tuning_output_file /mnt/results/tuning_
 python main.py --tuning --hardware DGX --tuning_output_file /mnt/results/tuning_results/staging_only_resnet50_1point25x_firsttuning_bce_fold0.csv --min_epochs 0 --max_epochs 30 --early_stopping --num_tuning_experiments 1 --split_dir "esgo_staging_5fold_100" --k 1 --results_dir /mnt/results --exp_code staging_only_resnet50_1point25x_firsttuning_30epochs_bce_fold0 --subtyping --weighted_sample --bag_loss balanced_ce --no_inst_cluster --task ovarian_5class  --model_type clam_sb --subtyping --csv_path 'dataset_csv/ESGO_train_all.csv' --data_root_dir "/mnt/results/features" --features_folder "ovarian_leeds_resnet50_1point25x_features_DGX" --tuning_config_file tuning_configs/esgo_staging_resnet50_1point25x_config1.txt
 ```
 
-After running all folds for a given magnification and tuning stage, the results were summarised into a csv for analysis:
+After running all folds for a given magnification and tuning stage, the validation set balanced cross-entropy loss values were summarised into a csv for analysis:
 
 ``` shell
+## 40x
+python combine_results.py --file_base_name "/mnt/results/tuning_results/staging_only_resnet50_40x_firsttuning_bce"
 ## 1.25x
 python combine_results.py --file_base_name "/mnt/results/tuning_results/staging_only_resnet50_1point25x_firsttuning_bce"
 ```
@@ -95,10 +98,13 @@ python combine_results.py --file_base_name "/mnt/results/tuning_results/staging_
 <summary>
 Model training
 </summary>
-The best model from the 5-fold cross-validation experiment (as judged by averaged validation set cross-entropy loss across three repeats and five folds) was trained:
+The best model for each magnification from hyperparameter tuning was trained:
   
 ``` shell
-python main.py --hardware DGX --max_patches_per_slide 15 --data_slide_dir "/mnt/data/ATEC_jpeg90compress" --min_epochs 0 --early_stopping --drop_out 0.0 --lr 0.0005 --reg 0.0001 --model_size hipt_smaller --split_dir "treatment_5fold_100" --k 5 --results_dir /mnt/results --exp_code treatment_HIPTnormalised_Q90_betterseg_15patches_drop0lr0005reg0001_modelhiptsmaller_ABMILsb_ce_20x_5fold_noaugs_bestfromsecondbigtuning --subtyping --weighted_sample --bag_loss ce --task treatment --max_epochs 1000 --model_type clam_sb --no_inst_cluster --csv_path 'dataset_csv/set_treatment.csv' --data_root_dir "/mnt/data" --features_folder treatment_Q90_hipt4096_features_normalised_updatedsegmentation
+## 40x
+python main.py --hardware DGX --min_epochs 0 --max_epochs 150 --early_stopping --split_dir "esgo_staging_5fold_100" --k 5 --results_dir /mnt/results --exp_code staging_only_resnet50_40x_bce_bestfromtuning_50patience --reg 0.0001 --drop_out 0.6 --lr 0.001 --max_patches_per_slide 50000 --model_size small --beta1 0.99 --beta2 0.99 --eps 1e-10 --subtyping --weighted_sample --bag_loss balanced_ce --no_inst_cluster --task ovarian_5class  --model_type clam_sb --subtyping --csv_path 'dataset_csv/ESGO_train_all.csv' --data_root_dir "/mnt/results/features" --features_folder "ovarian_leeds_resnet50_40x_features_DGX"
+## 1.25x
+python main.py --hardware DGX --min_epochs 0 --max_epochs 150 --early_stopping --split_dir "esgo_staging_5fold_100" --k 5 --results_dir /mnt/results --exp_code staging_only_resnet50_1point25x_bce_bestfromtuning_50patience --reg 0.00001 --drop_out 0.5 --lr 0.0005 --max_patches_per_slide 7 --model_size tiny --beta1 0.9 --beta2 0.999 --eps 1e-14 --subtyping --weighted_sample --bag_loss balanced_ce --no_inst_cluster --task ovarian_5class  --model_type clam_sb --subtyping --csv_path 'dataset_csv/ESGO_train_all.csv' --data_root_dir "/mnt/results/features" --features_folder "ovarian_leeds_resnet50_1point25x_features_DGX"
 ```
 </details>
 
@@ -106,53 +112,56 @@ python main.py --hardware DGX --max_patches_per_slide 15 --data_slide_dir "/mnt/
 <summary>
 Model evaluation
 </summary>
-The model was evaluated on the test sets of the five-fold cross validation with 100,000 iterations of bootstrapping:
+The models were evaluated on the test sets of the five-fold cross validation with 10,000 iterations of bootstrapping:
   
 ``` shell
-python eval.py --drop_out 0.0 --model_size hipt_smaller --models_exp_code treatment_HIPTnormalised_Q90_betterseg_15patches_drop0lr0005reg0001_modelhiptsmaller_ABMILsb_ce_20x_5fold_noaugs_bestfromsecondbigtuning_s1 --save_exp_code treatment_HIPTnormalised_Q90_betterseg_15patches_drop0lr0005reg0001_modelhiptsmaller_ABMILsb_ce_20x_5fold_noaugs_bestfromsecondbigtuning_bootstrapping --task treatment --model_type clam_sb --results_dir /mnt/results --data_root_dir "/mnt/data" --k 5 --features_folder "treatment_Q90_hipt4096_features_normalised_updatedsegmentation" --csv_path 'dataset_csv/set_treatment.csv' 
-python bootstrapping.py --num_classes 2 --model_names  treatment_HIPTnormalised_Q90_betterseg_15patches_drop0lr0005reg0001_modelhiptsmaller_ABMILsb_ce_20x_5fold_noaugs_bestfromsecondbigtuning_bootstrapping --bootstraps 100000 --run_repeats 1 --folds 5
+## 40x
+python eval.py --drop_out 0.6 --model_size small --models_exp_code staging_only_resnet50_40x_bce_bestfromtuning_50patience_s1 --save_exp_code staging_only_resnet50_40x_bce_bestfromtuning_50patience_bootstrapping --task ovarian_5class --model_type clam_sb --results_dir /mnt/results --data_root_dir "/mnt/results/features" --k 5 --features_folder "ovarian_leeds_resnet50_40x_features_DGX" --csv_path 'dataset_csv/ESGO_train_all.csv' 
+python bootstrapping.py  --num_classes 5 --model_names staging_only_resnet50_40x_bce_bestfromtuning_50patience_bootstrapping --bootstraps 10000 --run_repeats 1 --folds 5
+## 1.25x
+python eval.py --drop_out 0.5 --model_size tiny --models_exp_code staging_only_resnet50_1point25x_bce_bestfromtuning_50patience_s1 --save_exp_code staging_only_resnet50_1point25x_bce_bestfromtuning_50patience_bootstrapping --task ovarian_5class --model_type clam_sb --results_dir /mnt/results --data_root_dir "/mnt/results/features" --k 5 --features_folder "ovarian_leeds_resnet50_1point25x_features_DGX" --csv_path 'dataset_csv/ESGO_train_all.csv' 
+python bootstrapping.py  --num_classes 5 --model_names staging_only_resnet50_1point25x_bce_bestfromtuning_50patience_bootstrapping --bootstraps 10000 --run_repeats 1 --folds 5
 ```
 
-The cross-validation results for this optimal HIPT-ABMIL model were as follows:
+The models were also evaluated on the balanced hold-out test set with 10,000 iterations of bootstrapping. Predictions were taken as an average of the predictions from each fold:
 
 ``` shell
- Confusion Matrix:
- [[ 76  49]
- [ 29 128]]
-
- average ce loss:  0.4858174402095372 (not bootstrapped)
- AUC mean:  [0.8206680412411297]  AUC std:  [0.02530094639907452]
- F1 mean:  [0.7659177381223935]  F1 std:  [0.02579712919409385]
- accuracy mean:  [0.7234604255319149]  accuracy std:  [0.02667653193254119]
- balanced accuracy mean:  [0.7117468943178861]  balanced accuracy std:  [0.026864606981070703]
+## 40x
+python eval.py --splits_dir splits/esgo_test_splits --drop_out 0.6 --model_size small --models_exp_code staging_only_resnet50_40x_bce_bestfromtuning_50patience_s1 --save_exp_code staging_only_resnet50_40x_bce_bestfromtuning_50patience_holdouttest_s1 --task ovarian_5class --model_type clam_sb --results_dir /mnt/results --data_root_dir "/mnt/results/features" --k 5 --features_folder "ovarian_leeds_resnet50_40x_features_DGX" --csv_path 'dataset_csv/ESGO_test_set.csv'
+python bootstrapping.py --ensemble --num_classes 5 --model_names staging_only_resnet50_40x_bce_bestfromtuning_50patience_holdouttest_s1 --bootstraps 10000 --run_repeats 1 --folds 5
+## 1.25x
+python eval.py --splits_dir splits/esgo_test_splits --drop_out 0.5 --model_size tiny --models_exp_code staging_only_resnet50_1point25x_bce_bestfromtuning_50patience_s1 --save_exp_code staging_only_resnet50_1point25x_bce_bestfromtuning_50patience_holdouttest_s1 --task ovarian_5class --model_type clam_sb --results_dir /mnt/results --data_root_dir "/mnt/results/features" --k 5 --features_folder "ovarian_leeds_resnet50_1point25x_features_DGX" --csv_path 'dataset_csv/ESGO_test_set.csv'
+python bootstrapping.py --ensemble --num_classes 5 --model_names staging_only_resnet50_1point25x_bce_bestfromtuning_50patience_holdouttest_s1 --bootstraps 10000 --run_repeats 1 --folds 5
 ```
 </details>
 
 <details>
 <summary>
-Challenge test set
+Efficiency Testing
 </summary>
 
-First, the test set images were pre-processed into pyramid svs files through the same approach as used for the training set images (though these originated as .bmp files rather than .svs files), for example:
+Efficiency testing 
+
+The speed of model training was evaluated using the "--profile" command in main.py:
 
 ``` shell
-vips tiffsave "I:\treatment_data\2023MICCAI_testing_set\0.BMP" "I:\treatment_data\testpyramid_jpeg90compress\0.svs" --compression jpeg --Q 90 --tile --pyramid
+## 40x
+python main.py --profile --hardware DGX --min_epochs 0 --max_epochs 150 --early_stopping --split_dir "esgo_staging_5fold_100" --k 5 --results_dir /mnt/results --exp_code staging_only_resnet50_40x_bce_bestfromtuning_50patience_timing --reg 0.0001 --drop_out 0.6 --lr 0.001 --max_patches_per_slide 50000 --model_size small --beta1 0.99 --beta2 0.99 --eps 1e-10 --subtyping --weighted_sample --bag_loss balanced_ce --no_inst_cluster --task ovarian_5class  --model_type clam_sb --subtyping --csv_path 'dataset_csv/ESGO_train_all.csv' --data_root_dir "/mnt/results/features" --features_folder "ovarian_leeds_resnet50_40x_features_DGX"
+## 1.25x
+python main.py --profile --hardware DGX --min_epochs 0 --max_epochs 150 --early_stopping --split_dir "esgo_staging_5fold_100" --k 5 --results_dir /mnt/results --exp_code staging_only_resnet50_1point25x_bce_bestfromtuning_50patience_timing --reg 0.00001 --drop_out 0.5 --lr 0.0005 --max_patches_per_slide 7 --model_size tiny --beta1 0.9 --beta2 0.999 --eps 1e-14 --subtyping --weighted_sample --bag_loss balanced_ce --no_inst_cluster --task ovarian_5class  --model_type clam_sb --subtyping --csv_path 'dataset_csv/ESGO_train_all.csv' --data_root_dir "/mnt/results/features" --features_folder "ovarian_leeds_resnet50_1point25x_features_DGX"
 ```
 
-Patches were selected (one per slide due to the size of these images) and features extracted:
-``` shell
-python create_patches_fp.py --source "../mount_i/treatment_data/testpyramid_jpeg90compress" --save_dir "../mount_outputs/extracted_mag20x_patch4096_fp_testset_updated_Q90" --patch_size 4096 --step_size 4096 --seg --patch --stitch --pad_slide --sthresh 15 --mthresh 5 --use_otsu --closing 200 --atfilter 8
-python extract_features_fp.py --use_transforms 'HIPT' --model_type 'HIPT_4K' --data_h5_dir "../mount_outputs/extracted_mag20x_patch4096_fp_testset_updated_Q90" --data_slide_dir "../mount_i/treatment_data/testpyramid_jpeg90compress" --csv_path "dataset_csv/set_treatment_test.csv" --feat_dir "../mount_outputs/features/treatment_hipt4096_features_normalised_test_updated_Q90patches" --batch_size 1 --slide_ext .svs
-```
+The speed of model evaluation was calculated in three parts using a balanced subset of the test set (ESGO_efficiency_test_set.csv). This included patch creation, feature extraction, and evaluation:
 
-The hyperparameters of the best-performing model on internal data was applied to create an ensemble of four models:
 ``` shell
-python main.py --hardware DGX --max_patches_per_slide 15 --data_slide_dir "../mount_i/treatment_data/pyramid_jpeg90compress" --min_epochs 0 --early_stopping --drop_out 0.0 --lr 0.0005 --reg 0.0001 --model_size hipt_smaller --split_dir "treatment_submission_folds" --k 4 --results_dir results --exp_code treatment_HIPTnormalised_Q90_betterseg_15patches_drop0lr0005reg0001_modelhiptsmaller_ABMILsb_ce_20x_5fold_noaugs_4fold_7525test --subtyping --weighted_sample --bag_loss ce --task treatment --max_epochs 1000 --model_type clam_sb --no_inst_cluster --csv_path 'dataset_csv/set_treatment_plus_test.csv' --data_root_dir "../mount_outputs/features/" --features_folder treatment_Q90_hipt4096_features_normalised_updatedsegmentation
-```
-
-Finally, predictions were made on the TMA challenge test set, with the median of these predictions submitted for the challenge:
-``` shell
-python eval.py --drop_out 0.0 --model_size hipt_smaller --models_exp_code treatment_HIPTnormalised_Q90_betterseg_15patches_drop0lr0005reg0001_modelhiptsmaller_ABMILsb_ce_20x_5fold_noaugs_4fold_7525test_s1 --save_exp_code treatment_HIPTnormalised_Q90_betterseg_15patches_drop0lr0005reg0001_modelhiptsmaller_ABMILsb_ce_20x_5fold_noaugs_4fold_7525test_Q90patchestest_bootstrapping --task treatment --model_type clam_sb --results_dir results --data_root_dir "../mount_outputs/features/" --k 4 --features_folder "treatment_Q90_hipt4096_features_normalised_updatedsegmentation" --csv_path 'dataset_csv/set_treatment_plus_test.csv'
+## 40x
+python create_patches_fp.py --source "/mnt/data/Katie_WSI/efficiencytestset" --save_dir "/mnt/results/patches/ovarian_leeds_mag40x_patch256_efficiencytestset_fp" --patch_size 256 --step_size 256 --seg --patch --stitch
+python extract_features_fp.py --hardware DGX --custom_downsample 1 --model_type 'resnet50' --data_h5_dir "/mnt/results/patches/ovarian_leeds_mag40x_patch256_efficiencytestset_fp" --data_slide_dir "/mnt/data/Katie_WSI/efficiencytestset" --csv_path "dataset_csv/ESGO_efficiency_test_set.csv" --feat_dir "/mnt/results/features/ovarian_leeds_resnet50_40x_features_efficiencytestset" --batch_size 32 --slide_ext .svs
+python eval.py --profile --splits_dir splits/efficiency_splits --drop_out 0.6 --model_size small --models_exp_code staging_only_resnet50_40x_bce_bestfromtuning_50patience_s1 --save_exp_code staging_only_resnet50_40x_bce_bestfromtuning_50patience_holdouttest_efficiency_s1 --task ovarian_5class --model_type clam_sb --results_dir /mnt/results --data_root_dir "/mnt/results/features" --k 5 --features_folder "ovarian_leeds_resnet50_40x_features_efficiencytestset" --csv_path 'dataset_csv/ESGO_efficiency_test_set.csv'
+## 1.25x
+python create_patches_fp.py --source "/mnt/data/Katie_WSI/efficiencytestset" --save_dir "/mnt/results/patches/ovarian_leeds_mag40x_patch8192_efficiencytestset_fp" --patch_size 8192 --step_size 8192 --seg --patch --stitch
+python extract_features_fp.py --hardware DGX --custom_downsample 32 --model_type 'resnet50' --data_h5_dir "/mnt/results/patches/ovarian_leeds_mag40x_patch8192_efficiencytestset_fp" --data_slide_dir "/mnt/data/Katie_WSI/efficiencytestset" --csv_path "dataset_csv/ESGO_efficiency_test_set.csv" --feat_dir "/mnt/results/features/ovarian_leeds_resnet50_1point25x_features_efficiencytestset" --batch_size 32 --slide_ext .svs 
+python eval.py --profile --splits_dir splits/efficiency_splits --drop_out 0.5 --model_size tiny --models_exp_code staging_only_resnet50_1point25x_bce_bestfromtuning_50patience_s1 --save_exp_code staging_only_resnet50_1point25x_bce_bestfromtuning_50patience_holdouttest_efficiency_s1 --task ovarian_5class --model_type clam_sb --results_dir /mnt/results --data_root_dir "/mnt/results/features" --k 5 --features_folder "ovarian_leeds_resnet50_1point25x_features_efficiencytestset" --csv_path 'dataset_csv/ESGO_efficiency_test_set.csv'
 ```
 </details>
 
