@@ -35,6 +35,20 @@ Hyperparameters were tuned in 13 stages in which 1-3 individual hyperparameters 
 - Stage 12: Max Patches
 - Stage 13: First Moment Decay, Second Moment Decay
 
+## Results
+Cross-validation Summary:
+Table from paper here
+
+<details>
+<summary>
+40x Cross-validation Results:
+</summary>
+
+40x full results breakdown here
+
+</details>
+
+
 
 ## Code Examples
 The following code includes examples from every stage of pre-processing, hyperparameter tuning, and model validation at multiple magnifications.  
