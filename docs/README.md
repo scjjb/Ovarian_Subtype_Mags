@@ -140,8 +140,6 @@ python bootstrapping.py --ensemble --num_classes 5 --model_names staging_only_re
 Efficiency Testing
 </summary>
 
-Efficiency testing 
-
 The speed of model training was evaluated using the "--profile" command in main.py:
 
 ``` shell
