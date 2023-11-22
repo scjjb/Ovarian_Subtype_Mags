@@ -1,17 +1,17 @@
-## Predicting Ovarian Cancer Treatment Response in Histopathology using Hierarchical Vision Transformers and Multiple Instance Learning 
+## Reducing Histopathology Slide Magnification Improves the Accuracy and Speed of Ovarian Cancer Subtyping
 <img src="CISTIB logo.png" align="right" width="240"/>
 
-*HIPT-ABMIL is a transformer-based approach to classifying histopathology slides which leverages spatial information for better prognostication.* 
+*Brief Summary* 
 
 <img src="HIPT-AMBIL-ModelDiagram-Background-min.png" align="centre" width="900"/>
 
-This repo was created as part of an entry to the MICCAI 2023 challenge [*automated prediction of treatment effectiveness in ovarian cancer using histopathological images* (ATEC23)](https://github.com/cwwang1979/MICCAI_ATEC23challenge). The training data was made available through [TCIA](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=83593077).
+This repo was created as part of a submission to [ISBI 2024](https://biomedicalimaging.org/2024/).
 
-HIPT-CLAM is a multiple instance learning (MIL) approach in which features are extracted from 4096x4096 pixel regions using the pretrained hierarchical transformer model [HIPT_4K](https://github.com/mahmoodlab/HIPT) and these features are aggregated to generate a slide-level representation using the attention-based multiple instance learning (ABMIL) approach [CLAM](https://github.com/mahmoodlab/CLAM). 
+## Hyperparameter Tuning
 
 
-## Code Runs
-The following code was used in producing the results submitted as part of the ATEC23 challenge.
+## Code Examples
+The following code includes examples from every stage of pre-processing, hyperparameter tuning, and model validation.  
 
 <details>
 <summary>
@@ -125,4 +125,4 @@ python eval.py --drop_out 0.0 --model_size hipt_smaller --models_exp_code treatm
 
 
 ## Reference
-This code is an extension of our [previous repository](https://github.com/scjjb/DRAS-MIL), which itself was forked from the [CLAM repository](https://github.com/mahmoodlab/CLAM) with corresponding [paper](https://www.nature.com/articles/s41551-020-00682-w). Code is also used from the [HIPT repository](https://github.com/mahmoodlab/HIPT), including pretrained model weights. This repository and the original CLAM repository are both available for non-commercial academic purposes under the GPLv3 License.
+This code is an extension of our [previous repository](https://github.com/scjjb/DRAS-MIL), which itself was forked from the [CLAM repository](https://github.com/mahmoodlab/CLAM) with corresponding [paper](https://www.nature.com/articles/s41551-020-00682-w). This repository and the original CLAM repository are both available for non-commercial academic purposes under the GPLv3 License.
