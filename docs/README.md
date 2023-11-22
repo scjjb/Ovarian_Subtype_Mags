@@ -3,7 +3,7 @@
 
 *Brief Summary* 
 
-<img src="HIPT-AMBIL-ModelDiagram-Background-min.png" align="centre" width="900"/>
+<img src="ABMILarchitecture-min.png" align="centre" width="900"/>
 
 This repo was created as part of a submission to [ISBI 2024](https://biomedicalimaging.org/2024/).
 
