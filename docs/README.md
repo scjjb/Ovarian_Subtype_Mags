@@ -41,23 +41,15 @@ The following code includes examples from every stage of pre-processing, hyperpa
 
 <details>
 <summary>
-Data acquisition
-</summary>
-Before running any code, we downloaded the training data from TCIA, and turned the single-level svs files into multi-level (pyramidal) svs files using libvips. Some level of compression was necessary here to reduce file sizes, though we found compression Q90 indistinguishable from uncompressed images. Single-slide example:
-  
-``` shell
-vips tiffsave "I:\treatment_data\2-1613704B.svs" "I:\treatment_data\pyramid_jpeg90compress\2-1613704B.svs" --compression jpeg --Q 90 --tile --pyramid
-```
-</details>
-
-<details>
-<summary>
 Tissue region extraction
 </summary>
-We segmented tissue using Otsu thresholding and extracted non-overlapping 4096x4096 tissue regions:
+We segmented tissue using saturation thresholding and extracted non-overlapping tissue regions which corresponded to 256x256 pixel patches at 40x (e.g. 512x512 for 20x, 1024x1024 for 10x). At this stage all images are still at 40x magnification, and only the patch size is changing:
   
 ``` shell
-python create_patches_fp.py --source "../mount_i/treatment_data/pyramid_jpeg90compress" --save_dir "../mount_outputs/extracted_mag20x_patch4096_fp_updated" --patch_size 4096 --step_size 4096 --seg --patch --stitch --sthresh 15 --mthresh 5 --use_otsu --closing 100
+## 40x 256x256 patches for use in 40x experiments
+python create_patches_fp.py --source "/mnt/data/Katie_WSI/edrive" --save_dir "/mnt/results/patches/ovarian_leeds_mag40x_patch256_DGX_fp" --patch_size 256 --step_size 256 --seg --patch --stitch 	
+## 40x 8192x8192 patches for use in 1.25x experiments
+python create_patches_fp.py --source "/mnt/data/Katie_WSI/edrive" --save_dir "/mnt/results/patches/ovarian_leeds_mag40x_patch8192_DGX_fp" --patch_size 8192 --step_size 8192 --seg --patch --stitch 	
 ``` 
 </details>
 
@@ -65,10 +57,13 @@ python create_patches_fp.py --source "../mount_i/treatment_data/pyramid_jpeg90co
 <summary>
 Feature extraction
 </summary>
-We extracted [1,192] features from each 4096x4096 region using HIPT_4K:
+We then downsampled the patches to the experimental magnification and extracted [1,1024] features from each 256x256 patch using a ResNet50 encoder pretrained on ImageNet:
   
 ``` shell
-python extract_features_fp.py --use_transforms 'HIPT' --model_type 'HIPT_4K' --data_h5_dir "../mount_outputs/extracted_mag20x_Q90_patch4096_fp_updated" --data_slide_dir "../mount_i/treatment_data/pyramid_jpeg90compress" --csv_path "dataset_csv/set_treatment.csv" --feat_dir "../mount_outputs/features/treatment_Q90_hipt4096_features_normalised_updatedsegmentation" --batch_size 1 --slide_ext .svs 
+## 40x (no downsampling needed)
+python extract_features_fp.py --hardware DGX --model_type 'resnet50' --data_h5_dir "/mnt/results/patches/ovarian_leeds_mag40x_patch256_DGX_fp" --data_slide_dir "/mnt/data/Katie_WSI/edrive" --csv_path "dataset_csv/set_edrivepatches_ESGO_train_staging.csv" --feat_dir "/mnt/results/features/ovarian_leeds_resnet50_40x_features_DGX" --batch_size 32 --slide_ext .svs 
+## 1.25x (32x downsampling)
+python extract_features_fp.py --hardware DGX --custom_downsample 32 --model_type 'resnet50' --data_h5_dir "/mnt/results/patches/ovarian_leeds_mag40x_patch8192_DGX_fp" --data_slide_dir "/mnt/data/Katie_WSI/edrive" --csv_path "dataset_csv/set_edrivepatches_ESGO_train_staging.csv" --feat_dir "/mnt/results/features/ovarian_leeds_resnet50_1point25x_features_DGX" --batch_size 32 --slide_ext .svs 
 ```
 </details>
 
@@ -76,12 +71,25 @@ python extract_features_fp.py --use_transforms 'HIPT' --model_type 'HIPT_4K' --d
 <summary>
 Hyperparameter tuning
 </summary>
-Grid tuning was performed using RayTune with hyperparameter options defined within main.py. This example is from tuning fold 0 of the 5-fold cross-validation using HIPT-ABMIL: 
-  
+
+Tuning tuning tuning
 ``` shell
-python main.py --tuning --hardware DGX --tuning_output_file /mnt/results/tuning_results/main_treatment_Q90_betterseg_patience30mineverloss_3reps_noaugs_DGX_moreoptions_fold0.csv --num_tuning_experiments 3 --data_slide_dir "/mnt/data/ATEC_jpeg90compress" --min_epochs 0 --early_stopping --split_dir "treatment_5fold_100" --k 1 --results_dir /mnt/results --exp_code treatment_HIPTnormalised_Q90_betterseg_patience30mineverloss_3reps_noaugs_tuning_moreoptions_fold0 --subtyping --weighted_sample --bag_loss ce --task treatment --max_epochs 200 --model_type clam_sb --no_inst_cluster --log_data --csv_path 'dataset_csv/set_treatment.csv' --data_root_dir "/mnt/data" --features_folder treatment_Q90_hipt4096_features_normalised_updatedsegmentation
+## 40x tuning first stage first fold
+python main.py --tuning --hardware DGX --tuning_output_file /mnt/results/tuning_results/staging_only_resnet50_40x_firsttuning_bce_fold0.csv --min_epochs 0 --max_epochs 30 --early_stopping --num_tuning_experiments 1 --split_dir "esgo_staging_5fold_100" --k 1 --results_dir /mnt/results --exp_code staging_only_resnet50_40x_firsttuning_30epochs_bce_fold0 --subtyping --weighted_sample --bag_loss balanced_ce --no_inst_cluster --task ovarian_5class  --model_type clam_sb --subtyping --csv_path 'dataset_csv/ESGO_train_all.csv' --data_root_dir "/mnt/results/features" --features_folder "ovarian_leeds_resnet50_40x_features_DGX" --tuning_config_file tuning_configs/esgo_staging_resnet50_40x_config1.txt
+## 1.25x tuning first stage first fold
+python main.py --tuning --hardware DGX --tuning_output_file /mnt/results/tuning_results/staging_only_resnet50_1point25x_firsttuning_bce_fold0.csv --min_epochs 0 --max_epochs 30 --early_stopping --num_tuning_experiments 1 --split_dir "esgo_staging_5fold_100" --k 1 --results_dir /mnt/results --exp_code staging_only_resnet50_1point25x_firsttuning_30epochs_bce_fold0 --subtyping --weighted_sample --bag_loss balanced_ce --no_inst_cluster --task ovarian_5class  --model_type clam_sb --subtyping --csv_path 'dataset_csv/ESGO_train_all.csv' --data_root_dir "/mnt/results/features" --features_folder "ovarian_leeds_resnet50_1point25x_features_DGX" --tuning_config_file tuning_configs/esgo_staging_resnet50_1point25x_config1.txt
 ```
+
+After running all folds for a given magnification and tuning stage, the results were summarised into a csv for analysis:
+
+``` shell
+## 1.25x
+python combine_results.py --file_base_name "/mnt/results/tuning_results/staging_only_resnet50_1point25x_firsttuning_bce"
+```
+
 </details>
+
+
 
 <details>
 <summary>
