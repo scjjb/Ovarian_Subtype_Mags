@@ -58,7 +58,26 @@ Cross-validation Summary (mean ± s.d. from 10,000 iterations of bootstrapping):
 | 2.5x    | **55.6% ± 1.5%**   | 0.877 ± 0.011    | 0.557 ± 0.014     |
 | 1.25x   | **55.6% ± 1.7%**   | **0.888 ± 0.009**    | **0.558 ± 0.017**   |
 
+
 <details>
+<summary>
+Cross-validation Results By Class
+</summary>
+
+F1 Score by Class (not bootstrapped): 
+| Magnif. | HGSC | LGSC |  CCC | EC | MC |
+| :----------: | :----------: | :----------: | :----------: | :----------: | :----------: |
+| 40x | 0.844  | 0.000  | 0.667  | 0.668  | 0.407  |
+| 20x | 0.823  | 0.000  | 0.645  | 0.668  | 0.400  |
+| 10x | 0.846 | 0.000  | 0.712  | 0.669  | 0.351  |
+| 5x  | 0.853  | 0.000  | 0.764  | 0.651  | 0.423  |
+| 2.5x| 0.852 | 0.000  | 0.738  | 0.682  | 0.518  |
+|1.25x| 0.829  | 0.053  | 0.722  | 0.674  | 0.519  |
+
+</details>
+
+<details>
+  
 <summary>
 Detailed Cross-validation Results By Magnification (Not Yet Uploaded)
 </summary>
