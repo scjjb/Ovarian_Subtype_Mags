@@ -7,6 +7,8 @@
 
 This repo was created as part of a submission to [ISBI 2024](https://biomedicalimaging.org/2024/).
 
+<img src="PatchExamples-min.png" align="centre" width="900"/>
+
 ## Hyperparameters
 Final Hyperparamters Determined by Hyperparameter Tuning: 
 | Magnif. | Learning Rate | Weight Decay | First Moment Decay | Second Moment Decay | Stability Parameter | Attention Layer Size | Dropout | Max Patches |
