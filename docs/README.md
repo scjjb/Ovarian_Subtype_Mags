@@ -3,6 +3,8 @@
 
 *An extensive analysis of ovarian cancer WSI magnifications in attention-based multiple instance learning ([ABMIL](https://proceedings.mlr.press/v80/ilse18a.html?ref=https://githubhelp.com))* 
 
+[Preprint](https://arxiv.org/abs/2311.13956)
+
 <img src="ABMILarchitecture-min.png" align="centre" width="900"/>
 
 This repo was created as part of a submission to [ISBI 2024](https://biomedicalimaging.org/2024/).
