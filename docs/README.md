@@ -118,7 +118,23 @@ class 4 precision: 0.42529 recall: 0.38947 f1: 0.40659
 20x Cross-validation
 </summary>
 
-20x full results breakdown here
+|  | HGSC | LGSC |  CCC | EC | MC |
+| :----------: | :----------: | :----------: | :----------: | :----------: | :----------: |
+| HGSC | **406** | 3 | 28 | 44 | 3 |
+| LGSC | 18 | **0** | 3 | 1 | 0 |
+| CCC | 42 | 0 | **98** | 6 | 10 |
+| EC | 32 | 0 | 5 | **150** | 16 |
+| MC | 5 | 0 | 14 | 45 | **31** |
+
+class 0 precision: 0.80716 recall: 0.83884 f1: 0.82270
+
+class 1 precision: 0.00000 recall: 0.00000 f1: 0.00000
+
+class 2 precision: 0.66216 recall: 0.62821 f1: 0.64474
+
+class 3 precision: 0.60976 recall: 0.73892 f1: 0.66815
+
+class 4 precision: 0.51667 recall: 0.32632 f1: 0.40000
 
 </details>
 <details>
@@ -171,18 +187,50 @@ Detailed Hold-out Validation Results By Magnification (Not Yet Uploaded)
   
 <details>
 <summary>
-40x Hold-out Validation Results
+40x Hold-out 
 </summary>
 
-40x full results breakdown here
+|  | HGSC | LGSC |  CCC | EC | MC |
+| :----------: | :----------: | :----------: | :----------: | :----------: | :----------: |
+| HGSC | **20** | 0 | 0 | 0 | 0 |
+| LGSC | 11 | **0** | 1 | 4 | 4 |
+| CCC | 9 | 0 | **11** | 0 | 0 |
+| EC | 6 | 0 | 1 | **12** | 1 |
+| MC | 0 | 0 | 9 | 0 | **11** |
+
+class 0 precision: 0.43478 recall: 1.00000 f1: 0.60606
+
+class 1 precision: 0.00000 recall: 0.00000 f1: 0.00000
+
+class 2 precision: 0.50000 recall: 0.55000 f1: 0.52381
+
+class 3 precision: 0.75000 recall: 0.60000 f1: 0.66667
+
+class 4 precision: 0.68750 recall: 0.55000 f1: 0.61111
 
 </details>
 <details>
 <summary>
-20x Hold-out Validation Results
+20x Hold-out 
 </summary>
 
-20x full results breakdown here
+|  | HGSC | LGSC |  CCC | EC | MC |
+| :----------: | :----------: | :----------: | :----------: | :----------: | :----------: |
+| HGSC | **20** | 0 | 0 | 0 | 0 |
+| LGSC | 7 | **0** | 4 | 7 | 2 |
+| CCC | 7 | 1 | **12** | 0 | 0 |
+| EC | 6 | 0 | 1 | **13** | 0 |
+| MC | 1 | 0 | 8 | 1 | **10** |
+
+class 0 precision: 0.48780 recall: 1.00000 f1: 0.65574
+
+class 1 precision: 0.00000 recall: 0.00000 f1: 0.00000
+
+class 2 precision: 0.48000 recall: 0.60000 f1: 0.53333
+
+class 3 precision: 0.61905 recall: 0.65000 f1: 0.63415
+
+class 4 precision: 0.83333 recall: 0.50000 f1: 0.62500
 
 </details>
 <details>
