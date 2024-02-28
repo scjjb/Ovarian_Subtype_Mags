@@ -51,8 +51,8 @@ Hyperparameter Tuning Stages
 
 ## Results
 
-Barplots showing the results from cross-validation and hold-out experiments, with error bars indicating one standard deviation:
-<img src="barplots.png" align="centre" width="900"/>
+Barplots showing the results from cross-validation and hold-out experiments, with error bars indicating 95% confidence intervals:
+<img src="barplots_95CI.png" align="centre" width="900"/>
 
 Cross-validation Summary (mean ± s.d. from 10,000 iterations of bootstrapping):
 | Magnif. | Balanced Accuracy | Area Under ROC Curve (AUC) |  F1 Score |
