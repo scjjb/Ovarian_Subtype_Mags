@@ -142,7 +142,23 @@ class 4 precision: 0.51667 recall: 0.32632 f1: 0.40000
 10x Cross-validation
 </summary>
 
-10x full results breakdown here
+|  | HGSC | LGSC |  CCC | EC | MC |
+| :----------: | :----------: | :----------: | :----------: | :----------: | :----------: |
+| HGSC | **399** | 3 | 25 | 54 | 3 |
+| LGSC | 20 | **0** | 1 | 1 | 0 |
+| CCC | 24 | 3 | **115** | 13 | 1 |
+| EC | 14 | 1 | 14 | **165** | 9 |
+| MC | 2 | 1 | 12 | 57 | **23** |
+
+class 0 precision: 0.86928 recall: 0.82438 f1: 0.84624
+
+class 1 precision: 0.00000 recall: 0.00000 f1: 0.00000
+
+class 2 precision: 0.68862 recall: 0.73718 f1: 0.71207
+
+class 3 precision: 0.56897 recall: 0.81281 f1: 0.66937
+
+class 4 precision: 0.63889 recall: 0.24211 f1: 0.35115
 
 </details>
 <details>
@@ -182,7 +198,7 @@ Hold-out Validation Summary (mean ± s.d. from 10,000 iterations of bootstrappin
 | 1.25x   | 58.0% ± 3.8%   | 0.855 ± 0.021     | 0.529 ± 0.042     |
 <details>
 <summary>
-Detailed Hold-out Validation Results By Magnification (Not Yet Uploaded)
+Hold-out Validation Confusion Matrices
 </summary>
   
 <details>
@@ -235,10 +251,26 @@ class 4 precision: 0.83333 recall: 0.50000 f1: 0.62500
 </details>
 <details>
 <summary>
-10x Hold-out Validation Results
+10x Hold-out
 </summary>
 
-10x full results breakdown here
+|  | HGSC | LGSC |  CCC | EC | MC |
+| :----------: | :----------: | :----------: | :----------: | :----------: | :----------: |
+| HGSC | **20** | 0 | 0 | 0 | 0 |
+| LGSC | 5 | **0** | 8 | 4 | 3 |
+| CCC | 6 | 0 | **13** | 1 | 0 |
+| EC | 3 | 0 | 0 | **17** | 0 |
+| MC | 1 | 0 | 7 | 0 | **12** |
+
+class 0 precision: 0.57143 recall: 1.00000 f1: 0.72727
+
+class 1 precision: 0.00000 recall: 0.00000 f1: 0.00000
+
+class 2 precision: 0.46429 recall: 0.65000 f1: 0.54167
+
+class 3 precision: 0.77273 recall: 0.85000 f1: 0.80952
+
+class 4 precision: 0.80000 recall: 0.60000 f1: 0.68571
 
 </details>
 <details>
