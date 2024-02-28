@@ -85,20 +85,37 @@ F1 Score by Class (not bootstrapped):
 <details>
   
 <summary>
-Detailed Cross-validation Results By Magnification (Not Yet Uploaded)
+Cross-validation Confusion Matrices
 </summary>
   
 <details>
 <summary>
-40x Cross-validation Results
+40x Cross-validation
 </summary>
 
-40x full results breakdown here
+|  | HGSC | LGSC |  CCC | EC | MC |
+| :----------: | :----------: | :----------: | :----------: | :----------: | :----------: |
+| HGSC | **429** | 0 | 19 | 25 | 11 |
+| LGSC | 17 | **0** | 3 | 1 | 1 |
+| CCC | 39 | 0 | **94** | 9 | 14 |
+| EC | 38 | 1 | 1 | **139** | 24 |
+| MC | 10 | 0 | 9 | 39 | **37** |
+
+class 0 precision: 0.80488 recall: 0.88636 f1: 0.84366
+
+class 1 precision: 0.00000 recall: 0.00000 f1: 0.00000
+
+class 2 precision: 0.74603 recall: 0.60256 f1: 0.66667
+
+class 3 precision: 0.65258 recall: 0.68473 f1: 0.66827
+
+class 4 precision: 0.42529 recall: 0.38947 f1: 0.40659
+
 
 </details>
 <details>
 <summary>
-20x Cross-validation Results
+20x Cross-validation
 </summary>
 
 20x full results breakdown here
@@ -106,7 +123,7 @@ Detailed Cross-validation Results By Magnification (Not Yet Uploaded)
 </details>
 <details>
 <summary>
-10x Cross-validation Results
+10x Cross-validation
 </summary>
 
 10x full results breakdown here
@@ -114,7 +131,7 @@ Detailed Cross-validation Results By Magnification (Not Yet Uploaded)
 </details>
 <details>
 <summary>
-5x Cross-validation Results
+5x Cross-validation
 </summary>
 
 5x full results breakdown here
@@ -122,7 +139,7 @@ Detailed Cross-validation Results By Magnification (Not Yet Uploaded)
 </details>
 <details>
 <summary>
-2.5x Cross-validation Results
+2.5x Cross-validation
 </summary>
 
 2.5x full results breakdown here
@@ -130,7 +147,7 @@ Detailed Cross-validation Results By Magnification (Not Yet Uploaded)
 </details>
 <details>
 <summary>
-1.25x Cross-validation Results
+1.25x Cross-validation
 </summary>
 
 1.25x full results breakdown here
