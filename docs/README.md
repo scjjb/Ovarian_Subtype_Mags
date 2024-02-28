@@ -214,7 +214,23 @@ class 4 precision: 0.50000 recall: 0.53684 f1: 0.51777
 1.25x Cross-validation
 </summary>
 
-1.25x full results breakdown here
+|  | HGSC | LGSC |  CCC | EC | MC |
+| :----------: | :----------: | :----------: | :----------: | :----------: | :----------: |
+| HGSC | **412** | 8 | 33 | 16 | 15 |
+| LGSC | 17 | **1** | 3 | 1 | 0 |
+| CCC | 28 | 6 | **113** | 3 | 6 |
+| EC | 47 | 0 | 2 | **130** | 24 |
+| MC | 6 | 1 | 6 | 33 | **49** |
+
+class 0 precision: 0.80784 recall: 0.85124 f1: 0.82897
+
+class 1 precision: 0.06250 recall: 0.04545 f1: 0.05263
+
+class 2 precision: 0.71975 recall: 0.72436 f1: 0.72204
+
+class 3 precision: 0.71038 recall: 0.64039 f1: 0.67358
+
+class 4 precision: 0.52128 recall: 0.51579 f1: 0.51852
 
 </details>
 </details>
@@ -307,7 +323,7 @@ class 4 precision: 0.80000 recall: 0.60000 f1: 0.68571
 </details>
 <details>
 <summary>
-5x Hold-out Validation Results
+5x Hold-out
 </summary>
 
 |  | HGSC | LGSC |  CCC | EC | MC |
@@ -331,7 +347,7 @@ class 4 precision: 0.78571 recall: 0.55000 f1: 0.64706
 </details>
 <details>
 <summary>
-2.5x Hold-out Validation Results
+2.5x Hold-out
 </summary>
 
 |  | HGSC | LGSC |  CCC | EC | MC |
@@ -355,10 +371,26 @@ class 4 precision: 0.68182 recall: 0.75000 f1: 0.71429
 </details>
 <details>
 <summary>
-1.25x Hold-out Validation Results
+1.25x Hold-out 
 </summary>
 
-1.25x full results breakdown here
+|  | HGSC | LGSC |  CCC | EC | MC |
+| :----------: | :----------: | :----------: | :----------: | :----------: | :----------: |
+| HGSC | **20** | 0 | 0 | 0 | 0 |
+| LGSC | 12 | **1** | 4 | 1 | 2 |
+| CCC | 9 | 2 | **8** | 1 | 0 |
+| EC | 3 | 0 | 0 | **14** | 3 |
+| MC | 0 | 0 | 5 | 0 | **15** |
+
+class 0 precision: 0.45455 recall: 1.00000 f1: 0.62500
+
+class 1 precision: 0.33333 recall: 0.05000 f1: 0.08696
+
+class 2 precision: 0.47059 recall: 0.40000 f1: 0.43243
+
+class 3 precision: 0.87500 recall: 0.70000 f1: 0.77778
+
+class 4 precision: 0.75000 recall: 0.75000 f1: 0.75000
 
 </details>
 </details>
