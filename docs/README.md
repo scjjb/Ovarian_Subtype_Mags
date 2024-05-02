@@ -7,7 +7,7 @@
 
 <img src="ABMILarchitecture-min.png" align="centre" width="900"/>
 
-This repo was created as part of a submission to [ISBI 2024](https://biomedicalimaging.org/2024/), which will be presented as a poster in Poster Session 2 on the morning of Wednesday May 29th.
+This repo was created as part of a submission to [ISBI 2024](https://biomedicalimaging.org/2024/), which will be [presented](https://biomedicalimaging.org/2024/oral-sessions-list-2/#or23) on Wednesday 29/05/24 at 09:30.
 
 <img src="PatchExamples-min.png" align="centre" width="900"/>
 
